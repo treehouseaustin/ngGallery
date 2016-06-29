@@ -1,0 +1,10 @@
+{
+  "name": "ngGallery",
+  "version": "0.1.0",
+  "description": "",
+  "repository": "https://github.com/treehouseaustin/ngGallery",
+  "main": "src/js/ngGallery.js",
+  "dependencies": {
+    "angular": "^1.5.0"
+  }
+}
