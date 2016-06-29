@@ -31,7 +31,7 @@
         $templateCache.put(template_url,
             '<div class="{{ baseClass }}">' +
             '  <div ng-repeat="i in images">' +
-            '    <img ng-src="{{ i.thumb }}" class="{{ thumbClass }}" ng-click="openGallery($index)" alt="Image {{ $index + 1 }}" />' +
+            '    <img ng-src="{{ i.thumb || i}}" class="{{ thumbClass }}" ng-click="openGallery($index)" alt="Image {{ $index + 1 }}" />' +
             '  </div>' +
             '</div>' +
             '<div class="ng-overlay" ng-show="opened">' +
@@ -39,15 +39,15 @@
             '<div class="ng-gallery-content" unselectable="on" ng-show="opened" ng-swipe-left="nextImage()" ng-swipe-right="prevImage()">' +
             '  <div class="uil-ring-css" ng-show="loading"><div></div></div>' +
             '<a href="{{getImageDownloadSrc()}}" target="_blank" ng-show="showImageDownloadButton()" class="download-image"><i class="fa fa-download"></i></a>' +
-            '  <a class="close-popup" ng-click="closeGallery()"><i class="fa fa-close"></i></a>' +
-            '  <a class="nav-left" ng-click="prevImage()"><i class="fa fa-angle-left"></i></a>' +
+            '  <a class="close-popup" ng-click="closeGallery()"><span>&#215;</span></a>' +
+            '  <a class="nav-left" ng-click="prevImage()"><span>&#10094;</span></a>' +
             '  <img ondragstart="return false;" draggable="false" ng-src="{{ img }}" ng-click="nextImage()" ng-show="!loading" class="effect" />' +
-            '  <a class="nav-right" ng-click="nextImage()"><i class="fa fa-angle-right"></i></a>' +
+            '  <a class="nav-right" ng-click="nextImage()"><span>&#10095;</span></a>' +
             '  <span class="info-text">{{ index + 1 }}/{{ images.length }} - {{ description }}</span>' +
             '  <div class="ng-thumbnails-wrapper">' +
             '    <div class="ng-thumbnails slide-left">' +
             '      <div ng-repeat="i in images">' +
-            '        <img ng-src="{{ i.thumb }}" ng-class="{\'active\': index === $index}" ng-click="changeImage($index)" />' +
+            '        <img ng-src="{{ i.thumb || i }}" ng-class="{\'active\': index === $index}" ng-click="changeImage($index)" />' +
             '      </div>' +
             '    </div>' +
             '  </div>' +
@@ -73,6 +73,7 @@
                 return attrs.templateUrl || defaults.templateUrl;
             },
             link: function (scope, element, attrs) {
+                scope.images = scope.images || [];
                 setScopeValues(scope, attrs);
 
                 if (scope.thumbsNum >= 11) {
@@ -105,7 +106,7 @@
                         deferred.reject();
                     };
 
-                    image.src = scope.images[i].img;
+                    image.src = scope.images[i].img || scope.images[i];
                     scope.loading = true;
 
                     return deferred.promise;
