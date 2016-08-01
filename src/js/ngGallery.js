@@ -59,7 +59,9 @@
             scope: {
                 images: '=',
                 thumbsNum: '@',
-                hideOverflow: '='
+                hideOverflow: '=',
+                onOpen: '&',
+                onClose: '&'
             },
             controller: [
                 '$scope',
@@ -170,11 +172,13 @@
                         $thumbnails.css({width: thumbnailsWidth + 'px'});
                         $thumbwrapper.css({width: calculatedWidth.visible_width + 'px'});
                         smartScroll(scope.index);
+                        scope.onOpen();
                     });
                 };
 
                 scope.closeGallery = function () {
                     scope.opened = false;
+                    scope.onClose();
                     if (scope.hideOverflow) {
                         $('body').css({overflow: ''});
                     }
